@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 
+import com.revature.clients.AnswerClient;
 import com.revature.models.Question;
 import com.revature.repositories.QuestionRepository;
 
@@ -23,8 +24,8 @@ public class QuestionService {
 	QuestionRepository questionRepository;
 
 	//Answers will be accessed through openFeign
-//	@Autowired
-//	AnswerRepository answerRepository;
+	@Autowired
+	AnswerClient answerClient;
 
 	public QuestionService(QuestionRepository questionRepository) {
 		this.questionRepository = questionRepository;
@@ -98,7 +99,7 @@ public class QuestionService {
 		question.setStatus(true);
 
 		// Commented out because RSS is currently down
-//		Optional<Answer> optAnswer = answerRepository.findById(question.getAcceptedId());
+//		Optional<Answer> optAnswer = answerClient.getAnswerById(question.getAcceptedId());
 //		if(optAnswer.isPresent()) {
 //			Answer a = optAnswer.get();
 //			RSSAccountDTO dto = new RSSAccountDTO(a.getUserId(), points);

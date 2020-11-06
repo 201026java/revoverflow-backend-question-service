@@ -96,6 +96,10 @@ public class QuestionController {
 	public Question getQuestionById(@PathVariable int id) {
 		return questionService.findById(id);
 	}
-
+	
+	@GetMapping("/hello")
+	public String hello() {
+		return "hello";
+	}
 
 } 

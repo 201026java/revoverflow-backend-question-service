@@ -1,0 +1,13 @@
+version: '3.1'
+
+services:
+     revoverflow-question-service:
+         image: 'revoverflow-question-service:latest'
+         build:
+             context: .
+             dockerfile: Dockerfile
+         volumes:
+             - '/questionservice'
+             - '/root/.m2'
+         ports:
+             - '8082:8082'

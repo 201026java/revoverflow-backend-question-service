@@ -20,4 +20,7 @@ public interface QuestionRepository extends JpaRepository<Question, Integer>{
 
 	@Query("FROM Question s WHERE question_type = :questionType")
 	Page<Question> getAllQuestionsByQuestionType(Pageable pageable, String questionType);
+	
+	@Query("FROM Question s WHERE location = :location")
+	Page<Question> getAllQuestionsByLocation(Pageable pageable, String location);
 }

@@ -117,11 +117,7 @@ public class QuestionController {
 	 */
 	@GetMapping("/filter")
 	public Page<Question> getAllQuestionsByQuestionType(Pageable pageable, @RequestParam String questionType, @RequestParam String location, @RequestParam int id)
-	{
-		System.out.println(questionType);
-		System.out.println(location);
-		System.out.println(id);
-		
+	{	
 		return questionService.getAllQuestionsByFilter(pageable, questionType, location, id);
 	}
 

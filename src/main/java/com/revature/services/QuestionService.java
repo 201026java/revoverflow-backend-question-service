@@ -39,6 +39,11 @@ public class QuestionService {
 	public Page<Question> getAllQuestionsByUserId(Pageable pageable, int id){
 		return questionRepository.getAllQuestionsByUserID(pageable, id);		
 	}
+	
+	/** Grabs all questions based on a given questionType */
+	public Page<Question> getAllQuestionsByQuestionType(Pageable pageable, String questionType){
+		return questionRepository.getAllQuestionsByQuestionType(pageable, questionType);		
+	}
 
 	/** @Author James Walls */
 	/** Adds new questions and updates existing ones. */

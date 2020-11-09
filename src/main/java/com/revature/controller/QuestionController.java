@@ -96,6 +96,18 @@ public class QuestionController {
 	public Question getQuestionById(@PathVariable int id) {
 		return questionService.findById(id);
 	}
+	
+	/** get all the questions by user id
+	 * @param pageable
+	 * @param id = the id of the user
+	 * @return
+	 */
+	@GetMapping("/questionType/{questionType}")
+	public Page<Question> getAllQuestionsByQuestionType(Pageable pageable, @PathVariable String questionType)
+	{
+		return questionService.getAllQuestionsByQuestionType(pageable, questionType);
+	}
+
 
 
 } 

@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -40,6 +42,12 @@ public class Question {
 
 	@Column(name = "edit_date")
 	private LocalDateTime editDate;
+	
+    @Enumerated(EnumType.STRING)
+	private QuestionType questionType;
+	
+	@Column(name = "location")
+	private String location;
 
 	private boolean status;
 
@@ -58,6 +66,8 @@ public class Question {
 		result = prime * result + id;
 		result = prime * result + (status ? 1231 : 1237);
 		result = prime * result + ((title == null) ? 0 : title.hashCode());
+		result = prime * result + ((questionType == null) ? 0 : questionType.hashCode());
+		result = prime * result + ((location == null) ? 0 : location.hashCode());
 		result = prime * result + userID;
 		return result;
 	}
@@ -91,6 +101,16 @@ public class Question {
 				return false;
 		} else if (!editDate.equals(other.editDate))
 			return false;
+		if (questionType == null) {
+			if (other.questionType != null)
+				return false;
+		} else if (!questionType.equals(other.questionType))
+			return false;
+		if (location == null) {
+			if (other.location != null)
+				return false;
+		} else if (!location.equals(other.location))
+			return false;
 		if (id != other.id)
 			return false;
 		if (status != other.status)
@@ -107,7 +127,7 @@ public class Question {
 
 	public Question(int id, Integer acceptedId, @NotBlank(message = "Title requires a string value") String title,
 			@NotBlank(message = "Content requires a string value") String content, LocalDateTime creationDate,
-			LocalDateTime editDate, boolean status, int userID) {
+			LocalDateTime editDate, QuestionType questionType, String location, boolean status, int userID) {
 		super();
 		this.id = id;
 		this.acceptedId = acceptedId;
@@ -115,6 +135,8 @@ public class Question {
 		this.content = content;
 		this.creationDate = creationDate;
 		this.editDate = editDate;
+		this.questionType = questionType;
+		this.location = location;
 		this.status = status;
 		this.userID = userID;
 	}
@@ -122,8 +144,8 @@ public class Question {
 	@Override
 	public String toString() {
 		return "Question [id=" + id + ", acceptedId=" + acceptedId + ", title=" + title + ", content=" + content
-				+ ", creationDate=" + creationDate + ", editDate=" + editDate + ", status=" + status + ", userID="
-				+ userID + "]";
+				+ ", creationDate=" + creationDate + ", editDate=" + editDate + ", questionType=" + questionType + 
+				", location=" + location + ", status=" + status + ", userID=" + userID + "]";
 	}
 	
 }

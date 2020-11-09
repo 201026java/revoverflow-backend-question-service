@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.messaging.MessageEvent;
@@ -108,27 +109,22 @@ public class QuestionController {
 		return questionService.findById(id);
 	}
 	
-	/** get all the questions by user id
-	 * @param pageable
-	 * @param id = the id of the user
+	/** get all the questions by filter data
+	 * @param questionType = defines the question type (Revature or Location)
+	 * @param location = specific location if questionType is Location
+	 * @param id = the id of the user, or 0 if not specified
 	 * @return
 	 */
-	@GetMapping("/questionType/{questionType}")
-	public Page<Question> getAllQuestionsByQuestionType(Pageable pageable, @PathVariable String questionType)
+	@GetMapping("/filter")
+	public Page<Question> getAllQuestionsByQuestionType(Pageable pageable, @RequestParam String questionType, @RequestParam String location, @RequestParam int id)
 	{
-		return questionService.getAllQuestionsByQuestionType(pageable, questionType);
+		System.out.println(questionType);
+		System.out.println(location);
+		System.out.println(id);
+		
+		return questionService.getAllQuestionsByFilter(pageable, questionType, location, id);
 	}
 
-	/** get all the questions by user id
-	 * @param pageable
-	 * @param id = the id of the user
-	 * @return
-	 */
-	@GetMapping("/location/{location}")
-	public Page<Question> getAllQuestionsByLocation(Pageable pageable, @PathVariable String location)
-	{
-		return questionService.getAllQuestionsByLocation(pageable, location);
-	}
 
 
 } 

@@ -41,15 +41,41 @@ public class QuestionService {
 		return questionRepository.getAllQuestionsByUserID(pageable, id);		
 	}
 	
-	/** Grabs all questions based on a given questionType */
-	public Page<Question> getAllQuestionsByQuestionType(Pageable pageable, String questionType){
-		return questionRepository.getAllQuestionsByQuestionType(pageable, questionType);		
+	/** Grabs all questions based on a filter data*/
+	public Page<Question> getAllQuestionsByFilter(Pageable pageable, String questionType, String location, int id){	
+		if(questionType.contentEquals("Revature")) {
+			//return all revature type questions
+			if (id != 0) {
+				return questionRepository.getAllQuestionsByQuestionTypeAndUserId(pageable, questionType, id);
+			}
+			else {
+				return questionRepository.getAllQuestionsByQuestionType(pageable, questionType);
+			}
+		} else if (questionType.contains("Location")) {
+			if(!location.equals("none") && !location.contentEquals("")) {
+				//return all location specific questions
+				if (id != 0) {
+					return questionRepository.getAllQuestionsByLocationAndUserId(pageable, location, id);
+				}
+				else {
+					return questionRepository.getAllQuestionsByLocation(pageable, location);
+				}
+			}
+			else {
+				//return all location non-specific questions
+				if (id != 0) {
+					return questionRepository.getAllQuestionsByQuestionTypeAndUserId(pageable, questionType, id);
+				}
+				else {
+					return questionRepository.getAllQuestionsByQuestionType(pageable, questionType);
+				}
+			}
+		} else {
+			return null;
+		}		
 	}
 	
-	/** Grabs all questions based on a given location*/
-	public Page<Question> getAllQuestionsByLocation(Pageable pageable, String location){
-		return questionRepository.getAllQuestionsByLocation(pageable, location);		
-	}
+	
 
 	/** @Author James Walls */
 	/** Adds new questions and updates existing ones. */

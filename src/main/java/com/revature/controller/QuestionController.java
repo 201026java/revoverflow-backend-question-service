@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.revature.messaging.MessageEvent;
+import com.revature.messaging.MessageService;
+import com.revature.messaging.Operation;
 import com.revature.models.Question;
 import com.revature.services.QuestionService;
 
@@ -31,7 +34,12 @@ public class QuestionController {
 
 	@Autowired
 	QuestionService questionService;
+	
+	@Autowired
+	MessageService messageService;
 
+	public static int m = 0;
+	
 	/**	 *@author ken 
 	 * get all the questions*/
 	@GetMapping
@@ -67,6 +75,7 @@ public class QuestionController {
 	/** Adds new questions and updates existing ones. */
 	@PostMapping
 	public Question saveQuestion(@Valid @RequestBody Question question) {
+		messageService.triggerEvent(new MessageEvent(question, Operation.CREATE));
 		return questionService.save(question);
 	}
 
@@ -77,6 +86,7 @@ public class QuestionController {
 	 */
 	@PutMapping
 	public Question updateQuestionAcceptedAnswerId(@RequestBody Question question) {
+		messageService.triggerEvent(new MessageEvent(question, Operation.UPDATE_AA));
 		return questionService.updateQuestionAcceptedAnswerId(question);
 	}
 
@@ -87,6 +97,7 @@ public class QuestionController {
 	 */
 	@PutMapping("/status")
 	public Question updateStatus(@RequestBody Question question) {
+		messageService.triggerEvent(new MessageEvent(question, Operation.UPDATE_STATUS));
 		return questionService.updateQuestionStatus(question, 20);
 	}
 
@@ -96,5 +107,28 @@ public class QuestionController {
 	public Question getQuestionById(@PathVariable int id) {
 		return questionService.findById(id);
 	}
+	
+	/** get all the questions by user id
+	 * @param pageable
+	 * @param id = the id of the user
+	 * @return
+	 */
+	@GetMapping("/questionType/{questionType}")
+	public Page<Question> getAllQuestionsByQuestionType(Pageable pageable, @PathVariable String questionType)
+	{
+		return questionService.getAllQuestionsByQuestionType(pageable, questionType);
+	}
+
+	/** get all the questions by user id
+	 * @param pageable
+	 * @param id = the id of the user
+	 * @return
+	 */
+	@GetMapping("/location/{location}")
+	public Page<Question> getAllQuestionsByLocation(Pageable pageable, @PathVariable String location)
+	{
+		return questionService.getAllQuestionsByLocation(pageable, location);
+	}
+
 
 } 

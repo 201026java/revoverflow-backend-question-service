@@ -110,24 +110,13 @@ public class QuestionController {
 	
 	/** get all the questions by user id
 	 * @param pageable
-	 * @param questionType = the type of filtered question
+	 * @param id = the id of the user
 	 * @return
 	 */
 	@GetMapping("/questionType/{questionType}")
 	public Page<Question> getAllQuestionsByQuestionType(Pageable pageable, @PathVariable String questionType)
 	{
 		return questionService.getAllQuestionsByQuestionType(pageable, questionType);
-	}
-	
-	/** get all the questions by user id
-	 * @param pageable
-	 * @param id = the id of the user
-	 * @return
-	 */
-	@GetMapping("/location/{location}")
-	public Page<Question> getAllQuestionsByLocation(Pageable pageable, @PathVariable String location)
-	{
-		return questionService.getAllQuestionsByLocation(pageable, location);
 	}
 
 	/** get all the questions by user id

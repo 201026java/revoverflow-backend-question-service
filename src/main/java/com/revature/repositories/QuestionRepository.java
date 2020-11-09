@@ -29,4 +29,16 @@ public interface QuestionRepository extends JpaRepository<Question, Integer>{
 	
 	@Query("FROM Question s WHERE location = :location AND user_id = :id")
 	Page<Question> getAllQuestionsByLocationAndUserId(Pageable pageable, String location, int id);
+	
+	@Query("FROM Question s WHERE question_type = :questionType AND status = false")
+	Page<Question> getAllUnconfirmedQuestionsByQuestionType(Pageable pageable, String questionType);
+	
+	@Query("FROM Question s WHERE question_type = :questionType AND user_id = :id AND status = false")
+	Page<Question> getAllUnconfirmedQuestionsByQuestionTypeAndUserId(Pageable pageable, String questionType, int id);
+	
+	@Query("FROM Question s WHERE location = :location AND status = false")
+	Page<Question> getAllUnconfirmedQuestionsByLocation(Pageable pageable, String location);
+	
+	@Query("FROM Question s WHERE location = :location AND user_id = :id AND status = false")
+	Page<Question> getAllUnconfirmedQuestionsByLocationAndUserId(Pageable pageable, String location, int id);
 }

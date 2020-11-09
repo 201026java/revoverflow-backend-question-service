@@ -121,6 +121,10 @@ public class QuestionController {
 		return questionService.getAllQuestionsByFilter(pageable, questionType, location, id);
 	}
 
-
+	@GetMapping("/unconfirmed/filter")
+	public Page<Question> getAllUnconfirmedQuestionsByQuestionType(Pageable pageable, @RequestParam String questionType, @RequestParam String location, @RequestParam int id)
+	{	
+		return questionService.getAllUnconfirmedQuestionsByFilter(pageable, questionType, location, id);
+	}
 
 } 

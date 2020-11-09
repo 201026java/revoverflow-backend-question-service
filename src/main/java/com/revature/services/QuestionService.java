@@ -75,6 +75,41 @@ public class QuestionService {
 		}		
 	}
 	
+	/** Grabs all questions based on a filter data that are also unconfirmed*/
+	public Page<Question> getAllUnconfirmedQuestionsByFilter(Pageable pageable, String questionType, String location, int id){	
+		if(questionType.contentEquals("Revature")) {
+			//return all revature type questions
+			if (id != 0) {
+				return questionRepository.getAllUnconfirmedQuestionsByQuestionTypeAndUserId(pageable, questionType, id);
+			}
+			else {
+				return questionRepository.getAllUnconfirmedQuestionsByQuestionType(pageable, questionType);
+			}
+		} else if (questionType.contains("Location")) {
+			if(!location.equals("none") && !location.contentEquals("")) {
+				//return all location specific questions
+				if (id != 0) {
+					return questionRepository.getAllUnconfirmedQuestionsByLocationAndUserId(pageable, location, id);
+				}
+				else {
+					return questionRepository.getAllUnconfirmedQuestionsByLocation(pageable, location);
+				}
+			}
+			else {
+				//return all location non-specific questions
+				if (id != 0) {
+					return questionRepository.getAllUnconfirmedQuestionsByQuestionTypeAndUserId(pageable, questionType, id);
+				}
+				else {
+					return questionRepository.getAllUnconfirmedQuestionsByQuestionType(pageable, questionType);
+				}
+			}
+		} else {
+			return null;
+		}		
+	}
+
+	
 	
 
 	/** @Author James Walls */

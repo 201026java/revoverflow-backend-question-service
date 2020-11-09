@@ -51,8 +51,8 @@ public class QuestionControllerTests {
 	@Autowired 
 	private ObjectMapper mapper;
 	
-	@Autowired
-	private WebApplicationContext context;
+//	@Autowired
+//	private WebApplicationContext context;
 	
 	static User u1;
 	
@@ -71,11 +71,36 @@ public class QuestionControllerTests {
 //   				.build();
 //    }
 	
+	public interface SingletonInterface {
+		  String getNum();
+		}
+	
+	public enum SingletonObject implements SingletonInterface {
+	    INSTANCE;
+	    private String num;
+
+	    protected void setNum(String num) {
+	        this.num = num;
+	    }
+
+	    @Override
+	    public String getNum() {
+	        return num;
+	    }
+	}
+	
+	@Before
+	public void questionType() {
+	  SingletonInterface singleton = Mockito.mock(SingletonInterface.class);
+	  when(singleton.getNum()).thenReturn("Location");
+	}
+	
 	@Test
 	public void testGetAllQuestions() throws Exception {
+		  
 		// Create page of data
 		List<Question> questions = new ArrayList<>();
-		questions.add(new Question(1,1,"title","content", LocalDateTime.MIN, LocalDateTime.MIN, true, 1));
+		questions.add(new Question(1,1,"title","content", LocalDateTime.MIN, LocalDateTime.MIN, null, "New York", true, 1));
 		Page<Question> pageResult = new PageImpl<>(questions);
 		
 		// Stub getAllQuestions to return page of data
@@ -96,7 +121,7 @@ public void testGetAllQuestionsByStatus() throws Exception {
 		
 		// Create page of data
 		List<Question> questions = new ArrayList<>();
-		questions.add(new Question(1,1,"title", "content", LocalDateTime.MIN, LocalDateTime.MIN, false, 1));
+		questions.add(new Question(1,1,"title", "content", LocalDateTime.MIN, LocalDateTime.MIN, null, "New York", false, 1));
 		Page<Question> pageResult = new PageImpl<>(questions);
 		
 		// Stub getAllQuestions to return page of data
@@ -117,7 +142,7 @@ public void testGetAllQuestionsByStatus() throws Exception {
 	public void testGetAllQuestionsByUserId() throws Exception {
 		// Create page of data
 		List<Question> questions = new ArrayList<>();
-		questions.add(new Question(1,1,"title","content", LocalDateTime.MIN, LocalDateTime.MIN, true, 1));
+		questions.add(new Question(1,1,"title","content", LocalDateTime.MIN, LocalDateTime.MIN, null, "New York", true, 1));
 		Page<Question> pageResult = new PageImpl<>(questions);
 		
 		// Stub getAllQuestions to return page of data
@@ -136,7 +161,7 @@ public void testGetAllQuestionsByStatus() throws Exception {
 	/** @author ken */
 	@Test
 	public void testSaveQuestion() throws Exception {
-		Question question = new Question(1,1,"title","content", LocalDateTime.MIN, LocalDateTime.MIN, true, 1);
+		Question question = new Question(1,1,"title","content", LocalDateTime.MIN, LocalDateTime.MIN, null, "New York", true, 1);
 
 		when(questionService.save(Mockito.any(Question.class))).thenReturn(question);
 		
@@ -157,8 +182,8 @@ public void testGetAllQuestionsByStatus() throws Exception {
     @Test
     public void updateQuestionAcceptedAnswerId() throws Exception {
         Question questions, testQuestions;
-        questions = new Question(1,1,"title","content", LocalDateTime.MIN, LocalDateTime.MIN, false, 1);
-        testQuestions = new Question(1,1,"title","content", LocalDateTime.MIN, LocalDateTime.MIN, true, 1);
+        questions = new Question(1,1,"title","content", LocalDateTime.MIN, LocalDateTime.MIN, null, "New York", false, 1);
+        testQuestions = new Question(1,1,"title","content", LocalDateTime.MIN, LocalDateTime.MIN, null, "New York", true, 1);
         when(questionService.updateQuestionAcceptedAnswerId(Mockito.any(Question.class))).thenReturn(testQuestions);
         String toUpdate = mapper.writeValueAsString(questions);
         MvcResult result = mvc.perform(MockMvcRequestBuilders.put("/question")
@@ -178,8 +203,8 @@ public void testGetAllQuestionsByStatus() throws Exception {
 	@Test
     public void updateStatus() throws Exception {
         Question questions, testQuestions;
-        questions = new Question(1,1,"title","content", LocalDateTime.MIN, LocalDateTime.MIN, false, 1);
-        testQuestions = new Question(1,1,"title","content", LocalDateTime.MIN, LocalDateTime.MIN, true, 1);
+        questions = new Question(1,1,"title","content", LocalDateTime.MIN, LocalDateTime.MIN, null, "New York", false, 1);
+        testQuestions = new Question(1,1,"title","content", LocalDateTime.MIN, LocalDateTime.MIN, null, "New York", true, 1);
 
         when(questionService.updateQuestionStatus(Mockito.any(Question.class), Mockito.anyInt())).thenReturn(testQuestions);
         String toUpdate = mapper.writeValueAsString(questions);
@@ -197,7 +222,7 @@ public void testGetAllQuestionsByStatus() throws Exception {
 	public void testGetQuestionByQuestionId() throws Exception {
 		
 		// Create page of data
-		Question question = new Question(1,1,"title", "content", LocalDateTime.MIN, LocalDateTime.MIN, false, 1);
+		Question question = new Question(1,1,"title", "content", LocalDateTime.MIN, LocalDateTime.MIN, null, "New York", false, 1);
 		//Page<Question> pageResult = new PageImpl<>(question);
 		
 		// Stub getAllQuestions to return page of data

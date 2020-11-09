@@ -8,47 +8,50 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
-import com.revature.repositories.QuestionRepository;
+import com.revature.services.QuestionService;
 
-
+@Service
 public class MessageService {
 	
 	private static Set<Integer> eventCache = new HashSet<>();
 	
 	@Autowired
-	private QuestionRepository questionDao;
+	private QuestionService questionService;
 
 	@Autowired
 	private KafkaTemplate<String, MessageEvent> kt;
 	
-	public void triggerQuestionEvent(MessageEvent event) {
+	public void triggerEvent(MessageEvent event) {
 		eventCache.add(event.hashCode());
-		
-		if(event.getOperation() == Operation.DELETE) {
-			kt.send("question", event);
-		}
 		
 		kt.send("question", event);
 	}
 	
 	@KafkaListener(topics = "question")
 	public void processMessageEvent(MessageEvent event) {
+		if(event.getQuestion() == null || event.getOperation() == null) {
+			return;
+		}
 		if(eventCache.contains(event.hashCode())) {
 			eventCache.remove(event.hashCode());
 			return;
 		}
 		
-		//Flashcard card = event.getFlashcard();
+		System.out.println("___________________________________________________");
+		System.out.println("        I GOT A FISH");
+		System.out.println(event);
+		System.out.println("___________________________________________________");
 		
 		switch(event.getOperation()) {
 		case CREATE:
-			//this.questionDao.save(card);
+			this.questionService.save(event.getQuestion());
 			break;
-		case UPDATE:
-			//this.questionDao.save(card);
+		case UPDATE_AA:
+			this.questionService.updateQuestionAcceptedAnswerId(event.getQuestion());
 			break;
-		case DELETE:
-			//this.questionDao.deleteById(card.getId());
+		case UPDATE_STATUS:
+			//set to 0 points - do not add points again for every service. points are added from the original service
+			this.questionService.updateQuestionStatus(event.getQuestion(), 0);
 			break;
 		}
 	}

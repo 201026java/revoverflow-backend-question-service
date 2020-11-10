@@ -1,5 +1,7 @@
 package com.revature.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -116,15 +118,18 @@ public class QuestionController {
 	 * @return
 	 */
 	@GetMapping("/filter")
-	public Page<Question> getAllQuestionsByQuestionType(Pageable pageable, @RequestParam String questionType, @RequestParam String location, @RequestParam int id)
-	{	
+	public Page<Question> getAllQuestionsByFilter(Pageable pageable, @RequestParam String questionType, @RequestParam String location, @RequestParam int id){	
 		return questionService.getAllQuestionsByFilter(pageable, questionType, location, id);
 	}
 
 	@GetMapping("/unconfirmed/filter")
-	public Page<Question> getAllUnconfirmedQuestionsByFilter(Pageable pageable, @RequestParam String questionType, @RequestParam String location, @RequestParam int id)
-	{	
+	public Page<Question> getAllUnconfirmedQuestionsByFilter(Pageable pageable, @RequestParam String questionType, @RequestParam String location, @RequestParam int id){	
 		return questionService.getAllUnconfirmedQuestionsByFilter(pageable, questionType, location, id);
+	}
+	
+	@GetMapping("non-paged/filter")
+	public List<Question> getAllNonPagedQuestionsByFilter(@RequestParam String questionType, @RequestParam String location, @RequestParam int id){	
+		return questionService.getAllNonPagedQuestionsByFilter(questionType, location, id);
 	}
 
 } 

@@ -1,5 +1,6 @@
 package com.revature.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -102,6 +103,40 @@ public class QuestionService {
 				}
 				else {
 					return questionRepository.getAllUnconfirmedQuestionsByQuestionType(pageable, questionType);
+				}
+			}
+		} else {
+			return null;
+		}		
+	}
+	
+	/** Grabs all questions based on a filter data, returning non-paged version*/
+	public List<Question> getAllNonPagedQuestionsByFilter(String questionType, String location, int id){	
+		if(questionType.contentEquals("Revature")) {
+			//return all revature type questions
+			if (id != 0) {
+				return questionRepository.getAllNonPagedQuestionsByQuestionTypeAndUserId(questionType, id);
+			}
+			else {
+				return questionRepository.getAllNonPagedQuestionsByQuestionType(questionType);
+			}
+		} else if (questionType.contains("Location")) {
+			if(!location.equals("none") && !location.contentEquals("")) {
+				//return all location specific questions
+				if (id != 0) {
+					return questionRepository.getAllNonPagedQuestionsByLocationAndUserId(location, id);
+				}
+				else {
+					return questionRepository.getAllNonPagedQuestionsByLocation(location);
+				}
+			}
+			else {
+				//return all location non-specific questions
+				if (id != 0) {
+					return questionRepository.getAllNonPagedQuestionsByQuestionTypeAndUserId(questionType, id);
+				}
+				else {
+					return questionRepository.getAllNonPagedQuestionsByQuestionType(questionType);
 				}
 			}
 		} else {

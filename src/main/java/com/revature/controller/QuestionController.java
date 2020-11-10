@@ -112,8 +112,9 @@ public class QuestionController {
 	}
 	
 	/** get all the questions by filter data
+	 * Example URI: /filter?questionType=Revature&location=none&id=0
 	 * @param questionType = defines the question type (Revature or Location)
-	 * @param location = specific location if questionType is Location
+	 * @param location = specific location if questionType is Loca
 	 * @param id = the id of the user, or 0 if not specified
 	 * @return
 	 */

@@ -1,5 +1,7 @@
 package com.revature.repositories;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -41,4 +43,16 @@ public interface QuestionRepository extends JpaRepository<Question, Integer>{
 	
 	@Query("FROM Question s WHERE location = :location AND user_id = :id AND status = false")
 	Page<Question> getAllUnconfirmedQuestionsByLocationAndUserId(Pageable pageable, String location, int id);
+	
+	@Query("FROM Question s WHERE question_type = :questionType")
+	List<Question> getAllNonPagedQuestionsByQuestionType(String questionType);
+	
+	@Query("FROM Question s WHERE question_type = :questionType AND user_id = :id")
+	List<Question> getAllNonPagedQuestionsByQuestionTypeAndUserId(String questionType, int id);
+	
+	@Query("FROM Question s WHERE location = :location")
+	List<Question> getAllNonPagedQuestionsByLocation(String location);
+	
+	@Query("FROM Question s WHERE location = :location AND user_id = :id")
+	List<Question> getAllNonPagedQuestionsByLocationAndUserId(String location, int id);
 }

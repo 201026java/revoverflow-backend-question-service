@@ -127,7 +127,7 @@ public class QuestionController {
 		return questionService.getAllUnconfirmedQuestionsByFilter(pageable, questionType, location, id);
 	}
 	
-	@GetMapping("non-paged/filter")
+	@GetMapping("/non-paged/filter")
 	public List<Question> getAllNonPagedQuestionsByFilter(@RequestParam String questionType, @RequestParam String location, @RequestParam int id){	
 		return questionService.getAllNonPagedQuestionsByFilter(questionType, location, id);
 	}

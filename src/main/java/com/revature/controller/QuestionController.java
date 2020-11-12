@@ -104,11 +104,12 @@ public class QuestionController {
 		return questionService.findById(id);
 	}
 	
-	/** get all the questions by filter data
-	 * Example URI: /filter?questionType=Revature&location=none&id=0
-	 * @param questionType = defines the question type (Revature or Location)
-	 * @param location = specific location if questionType is Loca
-	 * @param id = the id of the user, or 0 if not specified
+	/** @Author Mark Alsip
+	 * get all the questions by filter data
+	 * Example URL: /filter?questionType=Revature&location=none&id=0
+	 * @param questionType = defines the question type (Revature or Location). Required.
+	 * @param location = specific location if questionType is Location. ignored if questionType is Revature.
+	 * @param id = the id of the user, or 0 if not specified.
 	 * @return
 	 */
 	@GetMapping("/filter")
@@ -116,11 +117,22 @@ public class QuestionController {
 		return questionService.getAllQuestionsByFilter(pageable, questionType, location, id);
 	}
 
+	/** @Author Mark Alsip
+	 * same as /filter, but only returns records with "status = false"
+	 * status refers to whether a question is confirmed or not
+	 */
 	@GetMapping("/unconfirmed/filter")
 	public Page<Question> getAllUnconfirmedQuestionsByFilter(Pageable pageable, @RequestParam String questionType, @RequestParam String location, @RequestParam int id){	
 		return questionService.getAllUnconfirmedQuestionsByFilter(pageable, questionType, location, id);
 	}
 	
+	/** @Author Mark Alsip
+	 * same as /filter, but returns a list instead of a page
+	 * this was necessary because openfeign doesn't like to
+	 * pass pages or pageables. something about encoding or
+	 * configuration or whatever. so this is specifically for
+	 * the openfeign link in the answer service.
+	 */
 	@GetMapping("/non-paged/filter")
 	public List<Question> getAllNonPagedQuestionsByFilter(@RequestParam String questionType, @RequestParam String location, @RequestParam int id){	
 		return questionService.getAllNonPagedQuestionsByFilter(questionType, location, id);

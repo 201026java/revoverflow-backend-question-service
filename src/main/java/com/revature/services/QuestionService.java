@@ -118,7 +118,7 @@ public class QuestionService {
 	}
 	
 	/** @Author Mark Alsip
-	 * 	Same as getAllQuestionsByFilter, but returns a list instead of a page.
+	 *  Same as getAllQuestionsByFilter, but returns a list instead of a page.
 	 *  See the controller endpoint for more.
 	 */
 	public List<Question> getAllNonPagedQuestionsByFilter(String questionType, String location, int id){	

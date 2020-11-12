@@ -42,7 +42,11 @@ public class QuestionService {
 		return questionRepository.getAllQuestionsByUserID(pageable, id);		
 	}
 	
-	/** Grabs all questions based on a filter data*/
+	/** @Author Mark Alsip
+	 * Grabs all questions based on a filter data.
+	 * There are 4 repository endpoints, 2 are for if there is an id provided,
+	 * and 2 for location specific. Otherwise it can be parsed by questionType.
+	 */
 	public Page<Question> getAllQuestionsByFilter(Pageable pageable, String questionType, String location, int id){	
 		if(questionType.contentEquals("Revature")) {
 			//return all revature type questions
@@ -76,7 +80,10 @@ public class QuestionService {
 		}		
 	}
 	
-	/** Grabs all questions based on a filter data that are also unconfirmed*/
+	/** @Author Mark Alsip
+	 *  Same as getAllQuestionsByFilter, but also requires records to have status=false.
+	 *  See the controller endpoint for more.
+	 */
 	public Page<Question> getAllUnconfirmedQuestionsByFilter(Pageable pageable, String questionType, String location, int id){	
 		if(questionType.contentEquals("Revature")) {
 			//return all revature type questions
@@ -110,7 +117,10 @@ public class QuestionService {
 		}		
 	}
 	
-	/** Grabs all questions based on a filter data, returning non-paged version*/
+	/** @Author Mark Alsip
+	 * 	Same as getAllQuestionsByFilter, but returns a list instead of a page.
+	 *  See the controller endpoint for more.
+	 */
 	public List<Question> getAllNonPagedQuestionsByFilter(String questionType, String location, int id){	
 		if(questionType.contentEquals("Revature")) {
 			//return all revature type questions

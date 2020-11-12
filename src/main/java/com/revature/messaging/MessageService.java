@@ -21,12 +21,30 @@ public class MessageService {
 	@Autowired
 	private KafkaTemplate<String, MessageEvent> kt;
 	
+	
+	/** @Author Mark Alsip 
+	 * messaging is used to update parallel h2 databases of the
+	 * same service. this will send a notification to add an
+	 * answer to that service's h2
+	 * @param pass in a MessageEvent, it'll contain a question and the http method
+	 */
 	public void triggerEvent(MessageEvent event) {
 		eventCache.add(event.hashCode());
 		
 		kt.send("question", event);
 	}
 	
+	
+	/** @Author Mark Alsip 
+	 * if a message is received add that message to the h2
+	 * I GOT A FISH is just used to log the message that was received. 
+	 * also i was thinking about fish when i wrote that. 
+	 * it's not necessary but i like it.
+	 * don't delete it.
+	 * please.
+	 * 
+	 * @param event is received by message
+	 */
 	@KafkaListener(topics = "question")
 	public void processMessageEvent(MessageEvent event) {
 		if(event.getQuestion() == null || event.getOperation() == null) {

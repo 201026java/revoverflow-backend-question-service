@@ -11,6 +11,11 @@ import com.revature.models.Answer;
 @RequestMapping("/answer")
 public interface AnswerClient {
 
+	
+	/** @Author Mark Alsip
+	 * Used to fetch answers from the answer service
+	 * @param id is the id of the answer. 
+	 */
 	@GetMapping("/id/{id}")
 	public Answer getAnswerById(@RequestParam Integer id);
 	

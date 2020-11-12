@@ -17,7 +17,7 @@ import com.revature.repositories.QuestionRepository;
 @Service
 public class QuestionService {
 
-	//RSS will be accessible through user service by openFeign
+//RSS will be accessible through user service by openFeign
 //	@Autowired 
 //	RSSService rssService;	
 

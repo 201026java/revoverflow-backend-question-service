@@ -48,36 +48,25 @@ public class QuestionService {
 	 * and 2 for location specific. Otherwise it can be parsed by questionType.
 	 */
 	public Page<Question> getAllQuestionsByFilter(Pageable pageable, String questionType, String location, int id){	
-		if(questionType.contentEquals("Revature")) {
-			//return all revature type questions
+		if (questionType.contains("Location") && !location.contentEquals("")) {	
+			//return all location specific questions
+			if (id != 0) {
+				return questionRepository.getAllQuestionsByLocationAndUserId(pageable, location, id);
+			}
+			else {
+				return questionRepository.getAllQuestionsByLocation(pageable, location);
+			}
+		} else if (!questionType.equals("")){
+			//if not location specific, get by question type
 			if (id != 0) {
 				return questionRepository.getAllQuestionsByQuestionTypeAndUserId(pageable, questionType, id);
 			}
 			else {
 				return questionRepository.getAllQuestionsByQuestionType(pageable, questionType);
 			}
-		} else if (questionType.contains("Location")) {
-			if(!location.equals("none") && !location.contentEquals("")) {
-				//return all location specific questions
-				if (id != 0) {
-					return questionRepository.getAllQuestionsByLocationAndUserId(pageable, location, id);
-				}
-				else {
-					return questionRepository.getAllQuestionsByLocation(pageable, location);
-				}
-			}
-			else {
-				//return all location non-specific questions
-				if (id != 0) {
-					return questionRepository.getAllQuestionsByQuestionTypeAndUserId(pageable, questionType, id);
-				}
-				else {
-					return questionRepository.getAllQuestionsByQuestionType(pageable, questionType);
-				}
-			}
 		} else {
-			return null;
-		}		
+			return getAllQuestions(pageable);
+		}
 	}
 	
 	/** @Author Mark Alsip
@@ -85,36 +74,25 @@ public class QuestionService {
 	 *  See the controller endpoint for more.
 	 */
 	public Page<Question> getAllUnconfirmedQuestionsByFilter(Pageable pageable, String questionType, String location, int id){	
-		if(questionType.contentEquals("Revature")) {
-			//return all revature type questions
+		if (questionType.contains("Location") && !location.contentEquals("")) {	
+			//return all location specific questions
+			if (id != 0) {
+				return questionRepository.getAllUnconfirmedQuestionsByLocationAndUserId(pageable, location, id);
+			}
+			else {
+				return questionRepository.getAllUnconfirmedQuestionsByLocation(pageable, location);
+			}
+		} else if (!questionType.equals("")){
+			//if not location specific, get by question type
 			if (id != 0) {
 				return questionRepository.getAllUnconfirmedQuestionsByQuestionTypeAndUserId(pageable, questionType, id);
 			}
 			else {
 				return questionRepository.getAllUnconfirmedQuestionsByQuestionType(pageable, questionType);
 			}
-		} else if (questionType.contains("Location")) {
-			if(!location.equals("none") && !location.contentEquals("")) {
-				//return all location specific questions
-				if (id != 0) {
-					return questionRepository.getAllUnconfirmedQuestionsByLocationAndUserId(pageable, location, id);
-				}
-				else {
-					return questionRepository.getAllUnconfirmedQuestionsByLocation(pageable, location);
-				}
-			}
-			else {
-				//return all location non-specific questions
-				if (id != 0) {
-					return questionRepository.getAllUnconfirmedQuestionsByQuestionTypeAndUserId(pageable, questionType, id);
-				}
-				else {
-					return questionRepository.getAllUnconfirmedQuestionsByQuestionType(pageable, questionType);
-				}
-			}
 		} else {
-			return null;
-		}		
+			return getAllQuestions(pageable);
+		}	
 	}
 	
 	/** @Author Mark Alsip
@@ -122,36 +100,25 @@ public class QuestionService {
 	 *  See the controller endpoint for more.
 	 */
 	public List<Question> getAllNonPagedQuestionsByFilter(String questionType, String location, int id){	
-		if(questionType.contentEquals("Revature")) {
-			//return all revature type questions
+		if (questionType.contains("Location") && !location.contentEquals("")) {	
+			//return all location specific questions
+			if (id != 0) {
+				return questionRepository.getAllNonPagedQuestionsByLocationAndUserId(location, id);
+			}
+			else {
+				return questionRepository.getAllNonPagedQuestionsByLocation(location);
+			}
+		} else if (!questionType.equals("")){
+			//if not location specific, get by question type
 			if (id != 0) {
 				return questionRepository.getAllNonPagedQuestionsByQuestionTypeAndUserId(questionType, id);
 			}
 			else {
 				return questionRepository.getAllNonPagedQuestionsByQuestionType(questionType);
 			}
-		} else if (questionType.contains("Location")) {
-			if(!location.equals("none") && !location.contentEquals("")) {
-				//return all location specific questions
-				if (id != 0) {
-					return questionRepository.getAllNonPagedQuestionsByLocationAndUserId(location, id);
-				}
-				else {
-					return questionRepository.getAllNonPagedQuestionsByLocation(location);
-				}
-			}
-			else {
-				//return all location non-specific questions
-				if (id != 0) {
-					return questionRepository.getAllNonPagedQuestionsByQuestionTypeAndUserId(questionType, id);
-				}
-				else {
-					return questionRepository.getAllNonPagedQuestionsByQuestionType(questionType);
-				}
-			}
 		} else {
-			return null;
-		}		
+			return questionRepository.findAll();
+		}	
 	}
 
 	

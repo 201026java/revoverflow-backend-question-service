@@ -1,22 +1,15 @@
 package com.revature.controller;
 
-<<<<<<< HEAD
-import java.util.List;
-=======
-import java.util.Collection;
->>>>>>> caf546d... Testing security between services
 
+import java.util.List;
+import java.util.Collection;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-<<<<<<< HEAD
-=======
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.CrossOrigin;
->>>>>>> caf546d... Testing security between services
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,42 +18,28 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-<<<<<<< HEAD
 import com.revature.messaging.MessageEvent;
 import com.revature.messaging.MessageService;
 import com.revature.messaging.Operation;
-=======
-import com.revature.clients.UserClient;
->>>>>>> caf546d... Testing security between services
 import com.revature.models.Question;
-import com.revature.models.User;
 import com.revature.services.QuestionService;
 
 
 @RestController
 @RequestMapping("/question")
-<<<<<<< HEAD
-
-=======
 @CrossOrigin(
 		origins = { "*" }, 
 		methods = { RequestMethod.GET, RequestMethod.PUT, 
 					RequestMethod.PATCH, RequestMethod.POST },
 		allowedHeaders = { "*" }
 	)
->>>>>>> caf546d... Testing security between services
 public class QuestionController {
 
 	@Autowired
 	QuestionService questionService;
 	
 	@Autowired
-<<<<<<< HEAD
 	MessageService messageService;
-=======
-	UserClient userClient;
->>>>>>> caf546d... Testing security between services
 
 	public static int m = 0;
 	
@@ -72,11 +51,6 @@ public class QuestionController {
 	{
 		return questionService.getAllQuestions(pageable);
 	}
-	
-	@PostMapping("/roles")
-	public Collection<GrantedAuthority> getRoles(User u){
-		return userClient.getRoles(u);
-	}
 
 	/**
 	 * @param status = true/false
@@ -84,6 +58,7 @@ public class QuestionController {
 	 */
 	/**@author ken*/
 	@GetMapping("/status/{status}")
+	@PreAuthorize("hasAuthority('USER')")
 	public Page<Question> getAllQuestionsByStatus(Pageable pageable, @PathVariable boolean status)
 	{
 		return questionService.getAllQuestionsByStatus(pageable, status);
@@ -96,6 +71,7 @@ public class QuestionController {
 	 * @return
 	 */
 	@GetMapping("/user/{id}")
+	@PreAuthorize("hasAuthority('USER')")
 	public Page<Question> getAllQuestionsByUserId(Pageable pageable, @PathVariable int id)
 	{
 		return questionService.getAllQuestionsByUserId(pageable, id);
@@ -104,6 +80,7 @@ public class QuestionController {
 	/** @Author James Walls */
 	/** Adds new questions and updates existing ones. */
 	@PostMapping
+	@PreAuthorize("hasAuthority('USER')")
 	public Question saveQuestion(@Valid @RequestBody Question question) {
 		messageService.triggerEvent(new MessageEvent(question, Operation.CREATE));
 		return questionService.save(question);
@@ -115,6 +92,7 @@ public class QuestionController {
 	 * acceptedId to the answer that is deemed the most acceptable.
 	 */
 	@PutMapping
+	@PreAuthorize("hasAuthority('ADMIN')")
 	public Question updateQuestionAcceptedAnswerId(@RequestBody Question question) {
 		messageService.triggerEvent(new MessageEvent(question, Operation.UPDATE_AA));
 		return questionService.updateQuestionAcceptedAnswerId(question);
@@ -126,6 +104,7 @@ public class QuestionController {
 	 * awards 20 points to the user who answered the question.
 	 */
 	@PutMapping("/status")
+	@PreAuthorize("hasAuthority('USER')")
 	public Question updateStatus(@RequestBody Question question) {
 		messageService.triggerEvent(new MessageEvent(question, Operation.UPDATE_STATUS));
 		return questionService.updateQuestionStatus(question, 20);
@@ -134,6 +113,7 @@ public class QuestionController {
 	/** @Author Natasha Poser 
 	 * @return the is the GetQuestionById end-point. It retrieves a question by it's ID*/
 	@GetMapping("/id/{id}")
+	@PreAuthorize("hasAuthority('USER')")
 	public Question getQuestionById(@PathVariable int id) {
 		return questionService.findById(id);
 	}

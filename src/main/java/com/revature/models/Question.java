@@ -46,8 +46,8 @@ public class Question {
 	@Column(name = "edit_date")
 	private LocalDateTime editDate;
 	
-    @Enumerated(EnumType.STRING)
-	private QuestionType questionType;
+	@Column(name = "question_type")
+	private String questionType;
 	
 	@Column(name = "location")
 	private String location;

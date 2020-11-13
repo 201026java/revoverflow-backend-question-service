@@ -26,7 +26,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
  		httpSecurity.headers().frameOptions().disable();
         httpSecurity.cors()
         	//disable csrf and allow these specific endpoints
-        	.and().csrf().disable().authorizeRequests().antMatchers("/question/roles", "/actuator/health", "/h2-console/**").permitAll().anyRequest().authenticated()
+        	.and().csrf().disable().authorizeRequests().antMatchers("/actuator/health", "/h2-console/**").permitAll().anyRequest().authenticated()
         	.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         	  // handle an authorized attempts 
         	.and().exceptionHandling().authenticationEntryPoint((req, rsp, e) -> rsp.sendError(HttpServletResponse.SC_UNAUTHORIZED));

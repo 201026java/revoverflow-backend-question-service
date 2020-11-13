@@ -16,6 +16,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.revature.clients.UserClient;
 import com.revature.models.User;
+import com.revature.services.QuestionService;
 
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
@@ -25,6 +26,9 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 	
 	@Autowired
 	private UserClient userClient;
+	
+	@Autowired
+	private QuestionService qService;
 	
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -46,26 +50,14 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 				jwt = authHeader.substring(7);
 				email = jwtUtil.extractEmail(jwt);
 			}
-			if (email != null && SecurityContextHolder.getContext().getAuthentication()==null) {
+			if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 				User temp = new User();
 				temp.setEmail(email);
-				System.out.println(temp);
 				User user = userClient.authUser(temp);
-				System.out.println(user);
-				System.out.println(userClient.getRoles(user));
 				if(jwtUtil.validateToken(jwt, user).equals(true)) {
-					System.out.println(jwt);
-					/*
-					 * UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new
-					 * UsernamePasswordAuthenticationToken(user,null, userClient.getRoles(user) );
-					 * System.out.println(usernamePasswordAuthenticationToken);
-					 * System.out.println("gets here");
-					 * usernamePasswordAuthenticationToken.setDetails(new
-					 * WebAuthenticationDetailsSource().buildDetails(request));
-					 * SecurityContextHolder.getContext().setAuthentication(
-					 * usernamePasswordAuthenticationToken);
-					 */
-					System.out.println("and here");
+					 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(user ,null, qService.getAuthority(user) );
+					 usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+					 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
 				}
 			}
 		//add catch block with logger

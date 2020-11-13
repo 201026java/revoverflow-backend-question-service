@@ -1,12 +1,22 @@
 package com.revature.controller;
 
+<<<<<<< HEAD
 import java.util.List;
+=======
+import java.util.Collection;
+>>>>>>> caf546d... Testing security between services
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+<<<<<<< HEAD
+=======
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.web.bind.annotation.CrossOrigin;
+>>>>>>> caf546d... Testing security between services
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,32 +26,56 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+<<<<<<< HEAD
 import com.revature.messaging.MessageEvent;
 import com.revature.messaging.MessageService;
 import com.revature.messaging.Operation;
+=======
+import com.revature.clients.UserClient;
+>>>>>>> caf546d... Testing security between services
 import com.revature.models.Question;
+import com.revature.models.User;
 import com.revature.services.QuestionService;
 
 
 @RestController
 @RequestMapping("/question")
+<<<<<<< HEAD
 
+=======
+@CrossOrigin(
+		origins = { "*" }, 
+		methods = { RequestMethod.GET, RequestMethod.PUT, 
+					RequestMethod.PATCH, RequestMethod.POST },
+		allowedHeaders = { "*" }
+	)
+>>>>>>> caf546d... Testing security between services
 public class QuestionController {
 
 	@Autowired
 	QuestionService questionService;
 	
 	@Autowired
+<<<<<<< HEAD
 	MessageService messageService;
+=======
+	UserClient userClient;
+>>>>>>> caf546d... Testing security between services
 
 	public static int m = 0;
 	
 	/**	 *@author ken 
 	 * get all the questions*/
 	@GetMapping
+	@PreAuthorize("hasAuthority('USER')")
 	public Page<Question> getAllQuestions(Pageable pageable)
 	{
 		return questionService.getAllQuestions(pageable);
+	}
+	
+	@PostMapping("/roles")
+	public Collection<GrantedAuthority> getRoles(User u){
+		return userClient.getRoles(u);
 	}
 
 	/**

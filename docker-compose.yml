@@ -2,7 +2,7 @@ version: '3.1'
 
 services:
      revoverflow-question-service:
-         image: 'revoverflow-question-service:latest'
+         image: 'ro-question:latest'
          build:
              context: .
              dockerfile: Dockerfile

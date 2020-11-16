@@ -1,0 +1,84 @@
+apiVersion: v1
+items:
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+    labels:
+      app: ro-question-deployment
+    name: ro-question-deployment
+    namespace: default
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: ro-question-deployment
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: ro-question-deployment
+      spec:
+        containers:
+        - image: 855430746673.dkr.ecr.us-east-1.amazonaws.com/matt-oberlies-00000916-ro-question:latest
+          imagePullPolicy: Always
+          name: ro-question-deployment
+          ports:
+          - containerPort: 8082
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /root/.m2/repository/com/revature/questionservice/ro-question-termination-log
+          terminationMessagePolicy: File
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8082
+          startupProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8082
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+kind: List
+---
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: Service
+  metadata:
+    labels:
+      app: ro-question-service
+    name: ro-question-service
+    namespace: default
+  spec:
+    ports:
+    - port: 8082
+      protocol: TCP
+      targetPort: 8082
+    selector:
+      app: ro-question-service
+    type: ClusterIP
+kind: List
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: ro-question-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    ngnix.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /question
+        backend:
+          serviceName: ro-question-service
+          servicePort: 8082

@@ -32,7 +32,7 @@ public class QuestionController {
 	@Autowired
 	QuestionService questionService;
 	
-	@Autowired
+	//@Autowired
 	MessageService messageService;
 
 	public static int m = 0;

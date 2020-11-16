@@ -2,6 +2,7 @@ package com.revature.controller;
 
 
 import java.util.List;
+import java.util.Collection;
 
 import javax.validation.Valid;
 
@@ -25,6 +26,7 @@ import com.revature.messaging.MessageService;
 import com.revature.messaging.Operation;
 
 import com.revature.models.Question;
+import com.revature.models.User;
 import com.revature.services.QuestionService;
 
 
@@ -53,6 +55,11 @@ public class QuestionController {
 	public Page<Question> getAllQuestions(Pageable pageable)
 	{
 		return questionService.getAllQuestions(pageable);
+	}
+	
+	@PostMapping("/roles")
+	public Collection<GrantedAuthority> getRoles(User u){
+		return userClient.getRoles(u);
 	}
 
 	/**

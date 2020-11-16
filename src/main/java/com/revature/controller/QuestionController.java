@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +27,7 @@ import com.revature.messaging.MessageService;
 import com.revature.messaging.Operation;
 
 import com.revature.models.Question;
+import com.revature.models.User;
 import com.revature.services.QuestionService;
 
 
@@ -54,6 +56,11 @@ public class QuestionController {
 	public Page<Question> getAllQuestions(Pageable pageable)
 	{
 		return questionService.getAllQuestions(pageable);
+	}
+	
+	@PostMapping("/roles")
+	public Collection<GrantedAuthority> getRoles(User u){
+		return userClient.getRoles(u);
 	}
 
 	/**

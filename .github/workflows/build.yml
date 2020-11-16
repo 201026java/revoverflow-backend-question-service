@@ -15,25 +15,27 @@ jobs:
     name: Build Image
     runs-on: ubuntu-latest
     steps:
-    # ---[ Configuring AWS credentials and Logging in to ECR ]---
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.ECR_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.ECR_SECRET_ACCESS_KEY }}
-        aws-region: ${{ secrets.AWS_REGION }}
-    - name: Login to Amazon ECR
-      id: login-ecr
-      uses: aws-actions/amazon-ecr-login@v1
-    - name: Checkout
-      uses: actions/checkout@v2
-    - name: Build the image
-      id: docker_build
-      run: |
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-        docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:latest
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+      # ---[ Configuring AWS credentials and Logging in to ECR ]---
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.ECR_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.ECR_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: "kubernetes"
+      - name: Build the image
+        id: docker_build
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:latest
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
   analyze:
     needs: [build]
     name: Test Code and Analyze Quality
@@ -41,7 +43,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
       - name: Set up JDK 11
         uses: actions/setup-java@v1
         with:
@@ -60,10 +62,10 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
       - name: Build and analyze
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
-  deploy: 
+  deploy:
     # ---[ Use docker image from the build step and deploy on EKS ]---
     needs: [build, analyze]
     name: Deploy on EKS

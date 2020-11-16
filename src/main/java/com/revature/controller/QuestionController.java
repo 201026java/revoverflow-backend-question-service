@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.revature.clients.UserClient;
 import com.revature.models.Question;
 import com.revature.services.QuestionService;
 
@@ -33,9 +32,6 @@ public class QuestionController {
 
 	@Autowired
 	QuestionService questionService;
-	
-	@Autowired
-	UserClient userClient;
 
 	/**	 *@author ken 
 	 * get all the questions*/

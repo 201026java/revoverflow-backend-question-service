@@ -13,7 +13,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 
-import com.revature.clients.AnswerClient;
 import com.revature.models.Question;
 import com.revature.models.User;
 import com.revature.repositories.QuestionRepository;
@@ -29,8 +28,6 @@ public class QuestionService {
 	QuestionRepository questionRepository;
 
 	//Answers will be accessed through openFeign
-	@Autowired
-	AnswerClient answerClient;
 
 	public QuestionService(QuestionRepository questionRepository) {
 		this.questionRepository = questionRepository;

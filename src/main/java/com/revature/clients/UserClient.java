@@ -1,9 +1,6 @@
 package com.revature.clients;
 
-import java.util.Collection;
-
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.revature.models.User;

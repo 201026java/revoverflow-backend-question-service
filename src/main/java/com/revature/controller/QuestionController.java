@@ -2,7 +2,6 @@ package com.revature.controller;
 
 
 import java.util.List;
-import java.util.Collection;
 
 import javax.validation.Valid;
 
@@ -22,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.revature.messaging.MessageEvent;
 import com.revature.messaging.MessageService;
 import com.revature.messaging.Operation;
-
 import com.revature.models.Question;
 import com.revature.services.QuestionService;
 

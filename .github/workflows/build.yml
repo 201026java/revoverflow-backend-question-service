@@ -75,10 +75,5 @@ jobs:
           aws configure set aws_secret_access_key ${{ secrets.EKS_SECRET_ACCESS_KEY }} --profile p3
           aws configure set default.region ${{ secrets.AWS_REGION }} --profile p3
           aws eks --region ${{ secrets.AWS_REGION }} update-kubeconfig --profile p3 --name $ECR_REPOSITORY_PREFIX
-<<<<<<< HEAD
           kubectl --namespace default set image deployment/ro-question-deployment ro-question-service=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           kubectl --namespace default rollout status deploy/ro-question-deployment
-=======
-          kubectl --namespace default set image deploy/ro-question ro-question-deployment=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          kubectl --namespace default rollout status deploy/ro-question
->>>>>>> e8fb175... Fix to build.yml so that if builds from kubernetes branch.

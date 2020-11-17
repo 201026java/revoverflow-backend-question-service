@@ -1,4 +1,4 @@
-package com.revature.services.test;
+package com.revature;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;

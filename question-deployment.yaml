@@ -6,7 +6,7 @@ items:
     annotations:
       deployment.kubernetes.io/revision: "1"
     labels:
-      app: ro-question-deployment
+      app: ro-question-service
     name: ro-question-deployment
     namespace: default
   spec:
@@ -15,17 +15,17 @@ items:
     revisionHistoryLimit: 10
     selector:
       matchLabels:
-        app: ro-question-deployment
+        app: ro-question-service
     template:
       metadata:
         creationTimestamp: null
         labels:
-          app: ro-question-deployment
+          app: ro-question-service
       spec:
         containers:
         - image: 855430746673.dkr.ecr.us-east-1.amazonaws.com/matt-oberlies-00000916-ro-question:latest
           imagePullPolicy: Always
-          name: ro-question-deployment
+          name: ro-question-service
           ports:
           - containerPort: 8082
             protocol: TCP
@@ -73,12 +73,13 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
     ngnix.ingress.kubernetes.io/ssl-redirect: "false"
-    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
 spec:
   rules:
   - http:
       paths:
-      - path: /question
+      - path: /question(.+)
         backend:
           serviceName: ro-question-service
           servicePort: 8082

@@ -1,4 +1,4 @@
-package com.revature.controller.test;
+package com.revature;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-//import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -28,6 +28,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -51,8 +52,8 @@ public class QuestionControllerTests {
 	@Autowired 
 	private ObjectMapper mapper;
 	
-//	@Autowired
-//	private WebApplicationContext context;
+	@Autowired
+	private WebApplicationContext context;
 	
 	static User u1;
 	
@@ -62,40 +63,17 @@ public class QuestionControllerTests {
 	@MockBean
 	private QuestionService questionService;
 	
-//    @Before                          
-//    public void setUp() {  
-//       u1 = new User(12,26,0,true,null,"admin@rss.com","Admin","Admin");
-//   	   mvc = MockMvcBuilders
-//   				.webAppContextSetup(context)
-//   				.apply(springSecurity())
-//   				.build();
-//    }
-	
-	public interface SingletonInterface {
-		  String getNum();
-		}
-	
-	public enum SingletonObject implements SingletonInterface {
-	    INSTANCE;
-	    private String num;
-
-	    protected void setNum(String num) {
-	        this.num = num;
-	    }
-
-	    @Override
-	    public String getNum() {
-	        return num;
-	    }
-	}
-	
-	@Before
-	public void questionType() {
-	  SingletonInterface singleton = Mockito.mock(SingletonInterface.class);
-	  when(singleton.getNum()).thenReturn("Location");
-	}
+    @Before                          
+    public void setUp() {  
+       u1 = new User(12,26,0,true,null,"admin@rss.com","Admin","Admin");
+   	   mvc = MockMvcBuilders
+   				.webAppContextSetup(context)
+   				.apply(springSecurity())
+   				.build();
+    }
 	
 	@Test
+	@WithMockUser(username = "user@rss.com", password = "12345", authorities = "USER")
 	public void testGetAllQuestions() throws Exception {
 		  
 		// Create page of data
@@ -117,7 +95,8 @@ public class QuestionControllerTests {
 	
 	/** @Author ken */
 	@Test
-public void testGetAllQuestionsByStatus() throws Exception {
+	@WithMockUser(username = "user@rss.com", password = "12345", authorities = "USER")
+	public void testGetAllQuestionsByStatus() throws Exception {
 		
 		// Create page of data
 		List<Question> questions = new ArrayList<>();
@@ -139,6 +118,7 @@ public void testGetAllQuestionsByStatus() throws Exception {
 	
 	/** @Author ken */
 	@Test
+	@WithMockUser(username = "user@rss.com", password = "12345", authorities = "USER")
 	public void testGetAllQuestionsByUserId() throws Exception {
 		// Create page of data
 		List<Question> questions = new ArrayList<>();
@@ -160,6 +140,7 @@ public void testGetAllQuestionsByStatus() throws Exception {
 	
 	/** @author ken */
 	@Test
+	@WithMockUser(username = "user@rss.com", password = "12345", authorities = "USER")
 	public void testSaveQuestion() throws Exception {
 		Question question = new Question(1,1,"title","content", LocalDateTime.MIN, LocalDateTime.MIN, null, "New York", true, 1);
 
@@ -180,6 +161,7 @@ public void testGetAllQuestionsByStatus() throws Exception {
 	 * @return Tests to ensure that the Question Controller method for the update status method works.
 	 */
     @Test
+    @WithMockUser(username = "admin@rss.com", password = "12345", authorities = "ADMIN")
     public void updateQuestionAcceptedAnswerId() throws Exception {
         Question questions, testQuestions;
         questions = new Question(1,1,"title","content", LocalDateTime.MIN, LocalDateTime.MIN, null, "New York", false, 1);
@@ -201,6 +183,7 @@ public void testGetAllQuestionsByStatus() throws Exception {
 	 * @return Checks to make sure that the Question Controller method for the update accepted id method works.
 	 */
 	@Test
+	@WithMockUser(username = "user@rss.com", password = "12345", authorities = "USER")
     public void updateStatus() throws Exception {
         Question questions, testQuestions;
         questions = new Question(1,1,"title","content", LocalDateTime.MIN, LocalDateTime.MIN, null, "New York", false, 1);
@@ -219,6 +202,7 @@ public void testGetAllQuestionsByStatus() throws Exception {
 	
 	/** @Author ken */
 	@Test
+	@WithMockUser(username = "user@rss.com", password = "12345", authorities = "USER")
 	public void testGetQuestionByQuestionId() throws Exception {
 		
 		// Create page of data

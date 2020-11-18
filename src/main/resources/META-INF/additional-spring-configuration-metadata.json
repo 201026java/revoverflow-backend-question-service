@@ -1,5 +1,12 @@
-{"properties": [{
-  "name": "environment.rss.secret",
-  "type": "java.lang.String",
-  "description": "A description for 'environment.rss.secret'"
-}]}
+{"properties": [
+  {
+    "name": "environment.rss.secret",
+    "type": "java.lang.String",
+    "description": "A description for 'environment.rss.secret'"
+  },
+  {
+    "name": "environment.rss.user.url",
+    "type": "java.lang.String",
+    "description": "A description for 'environment.rss.user.url'"
+  }
+]}

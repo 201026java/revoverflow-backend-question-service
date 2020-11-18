@@ -76,7 +76,7 @@ public class QuestionController {
 	@PostMapping
 	@PreAuthorize("hasAuthority('USER')")
 	public Question saveQuestion(@Valid @RequestBody Question question) {
-		messageService.triggerEvent(new MessageEvent(question, Operation.CREATE));
+		//messageService.triggerEvent(new MessageEvent(question, Operation.CREATE));
 		return questionService.save(question);
 	}
 
@@ -88,7 +88,7 @@ public class QuestionController {
 	@PutMapping
 	@PreAuthorize("hasAuthority('ADMIN')")
 	public Question updateQuestionAcceptedAnswerId(@RequestBody Question question) {
-		messageService.triggerEvent(new MessageEvent(question, Operation.UPDATE_AA));
+		//messageService.triggerEvent(new MessageEvent(question, Operation.UPDATE_AA));
 		return questionService.updateQuestionAcceptedAnswerId(question);
 	}
 
@@ -100,7 +100,7 @@ public class QuestionController {
 	@PutMapping("/status")
 	@PreAuthorize("hasAuthority('USER')")
 	public Question updateStatus(@RequestBody Question question) {
-		messageService.triggerEvent(new MessageEvent(question, Operation.UPDATE_STATUS));
+		//messageService.triggerEvent(new MessageEvent(question, Operation.UPDATE_STATUS));
 		return questionService.updateQuestionStatus(question, 20);
 	}
 

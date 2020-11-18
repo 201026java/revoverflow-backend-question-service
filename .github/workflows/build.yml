@@ -2,7 +2,7 @@ name: CI/CD
 on:
   push:
     branches:
-      - testing-question
+      - main
   pull_request:
     types: [opened, synchronize, reopened]
 env:
@@ -27,8 +27,6 @@ jobs:
       uses: aws-actions/amazon-ecr-login@v1
     - name: Checkout
       uses: actions/checkout@v2
-      with:
-        ref: 'testing-question'
     - name: Build the image
       id: docker_build
       run: |

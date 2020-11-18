@@ -2,7 +2,7 @@ name: CI/CD
 on:
   push:
     branches:
-      - kubernetes
+      - main
   pull_request:
     types: [opened, synchronize, reopened]
 env:
